@@ -7,11 +7,13 @@ calculate if a pointer is inside a polygon.
 ## Develop
 
 To run this project to develop is necessary:
+
 - [Rust](https://www.rust-lang.org/tools/install)
 - [wasm-pack](https://rustwasm.github.io/wasm-pack/installer/)
 - [Deno](https://deno.land/#installation)
 
 To run the Rust tests of wasm-bindgen functions:
+
 ```
 wasm-pack test --node rs_lib/
 ```
