@@ -1,7 +1,7 @@
 # Deno application with Wasmbuild
 
 This project uses Wasmbuild to compiles Rust code to WebAssembly. The
-WebAssembly module contains bindings to JavaScript code use Geo library to
+WebAssembly module contains bindings to JavaScript code use [Geo](https://crates.io/crates/geo) library to
 calculate if a pointer is inside a polygon.
 
 ## Develop
