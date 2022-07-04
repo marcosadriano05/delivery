@@ -6,6 +6,8 @@ calculate if a pointer is inside a polygon.
 
 ## Develop
 
+### Rust (WebAssembly)
+
 To run this project to develop is necessary:
 
 - [Rust](https://www.rust-lang.org/tools/install)
@@ -25,3 +27,11 @@ deno task wasmbuild
 ```
 
 The wasm file and js glue code are in lib folder.
+
+### Deno
+
+To run tests:
+
+```shell
+deno task test
+```
