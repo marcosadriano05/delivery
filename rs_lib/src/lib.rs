@@ -1,18 +1,8 @@
-use geo::{point, Contains, Coordinate, LineString, Point, Polygon};
-use serde::{Deserialize, Serialize};
+pub mod entities;
+use entities::{points_to_coordinates, PointJs, PolygonJs};
+
+use geo::{Contains, LineString, Point, Polygon};
 use wasm_bindgen::prelude::*;
-
-#[derive(Serialize, Deserialize)]
-struct PointJs {
-  x: f64,
-  y: f64,
-}
-
-#[derive(Serialize, Deserialize)]
-struct PolygonJs {
-  exterior: Vec<PointJs>,
-  interiors: Vec<Vec<PointJs>>,
-}
 
 #[wasm_bindgen]
 pub fn is_point_in_polygon(
@@ -24,38 +14,20 @@ pub fn is_point_in_polygon(
     Ok(value) => point_js = value,
     Err(_err) => return Err(JsValue::from("Erro ao converter point.")),
   }
-  let point: Point<f64> = point!(x: point_js.x, y: point_js.y);
+  let point: Point<f64> = Point::new(point_js.x, point_js.y);
 
   let polygon_js: PolygonJs;
   match polygon.into_serde() {
     Ok(value) => polygon_js = value,
     Err(_err) => return Err(JsValue::from("Erro ao converter polygon.")),
   }
-  let exterior: Vec<Coordinate> = polygon_js
-    .exterior
-    .iter()
-    .map(|value| Coordinate {
-      x: value.x,
-      y: value.y,
-    })
-    .collect();
-  let interiors: Vec<Vec<Coordinate>> = polygon_js
+
+  let exterior = LineString::new(points_to_coordinates(&polygon_js.exterior));
+
+  let interiors: Vec<LineString> = polygon_js
     .interiors
     .iter()
-    .map(|value| {
-      value
-        .iter()
-        .map(|value2| Coordinate {
-          x: value2.x,
-          y: value2.y,
-        })
-        .collect()
-    })
-    .collect();
-  let exterior = LineString::new(exterior);
-  let interiors: Vec<LineString> = interiors
-    .iter()
-    .map(|value| LineString::new(value.clone()))
+    .map(|interior| LineString::new(points_to_coordinates(interior)))
     .collect();
 
   let polygon: Polygon = Polygon::new(exterior, interiors);
