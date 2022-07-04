@@ -1,5 +1,5 @@
 import { assertEquals, describe, it } from "../../deps.ts";
-import { CoverageArea, Point } from "../../src/domain/entities.ts";
+import { Address, CoverageArea, Point } from "../../src/domain/entities.ts";
 
 const coordinates = [
   [[[30, 20], [45, 40], [10, 40], [30, 20]], [[26, 34], [34, 36], [30, 30]]],
@@ -33,5 +33,34 @@ describe("CoverageArea", () => {
     assertEquals(secondPolygon.exterior[3].x, 5);
     assertEquals(secondPolygon.exterior[3].y, 10);
     assertEquals(secondPolygon.interiors.length, 0);
+  });
+
+  it("should return true if address is inside coverage area", () => {
+    const address = new Address(20, 38);
+    assertEquals(coverageArea.isAddressIn(address), true);
+  });
+
+  it("should return false if address is outside coverage area", () => {
+    let address = new Address(50, 20);
+    assertEquals(coverageArea.isAddressIn(address), false);
+
+    address = new Address(30, 33);
+    assertEquals(coverageArea.isAddressIn(address), false);
+  });
+
+  it("should return false if address is on the edge of coverage area", () => {
+    let address = new Address(40, 20);
+    assertEquals(coverageArea.isAddressIn(address), false);
+
+    address = new Address(30.08, 34.82);
+    assertEquals(coverageArea.isAddressIn(address), false);
+  });
+
+  it("should return false if address is on vertex of coverage area", () => {
+    let address = new Address(10, 40);
+    assertEquals(coverageArea.isAddressIn(address), false);
+
+    address = new Address(26, 34);
+    assertEquals(coverageArea.isAddressIn(address), false);
   });
 });

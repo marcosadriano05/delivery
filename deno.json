@@ -1,7 +1,8 @@
 {
   "tasks": {
     "run": "deno run --allow-read src/main.ts",
-    "wasmbuild": "deno run -A https://deno.land/x/wasmbuild@0.8.2/main.ts"
+    "wasmbuild": "deno run -A https://deno.land/x/wasmbuild@0.8.2/main.ts",
+    "test": "deno test --allow-read"
   },
   "fmt": {
     "files": {

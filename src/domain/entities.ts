@@ -1,3 +1,6 @@
+import { instantiate } from "../../lib/rs_lib.generated.js";
+const { is_point_in_polygon } = await instantiate();
+
 export class Point {
   x: number;
   y: number;
@@ -55,5 +58,11 @@ export class CoverageArea {
       });
       return new Polygon(exterior, interiors);
     });
+  }
+
+  isAddressIn(address: Address): boolean {
+    return this.getAreas().some((area) =>
+      is_point_in_polygon(address.coordinates, area)
+    );
   }
 }
