@@ -2,7 +2,12 @@
   "tasks": {
     "run": "deno run --allow-read src/main.ts",
     "wasmbuild": "deno run -A https://deno.land/x/wasmbuild@0.8.2/main.ts",
-    "test": "deno test --allow-read"
+    "test": "deno test --allow-read",
+    "migration:create": "deno run -A --unstable https://deno.land/x/nessie/cli.ts make:migration",
+    "migration:run": "deno run -A --unstable https://deno.land/x/nessie/cli.ts migrate",
+    "migration:rollback": "deno run -A --unstable https://deno.land/x/nessie/cli.ts rollback",
+    "seed:create": "deno run -A --unstable https://deno.land/x/nessie/cli.ts make:seed",
+    "seed:run": "deno run -A --unstable https://deno.land/x/nessie/cli.ts seed"
   },
   "fmt": {
     "files": {
