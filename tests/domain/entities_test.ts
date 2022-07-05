@@ -1,4 +1,4 @@
-import { assertEquals, describe, it } from "../../deps.ts";
+import { assertEquals, describe, it } from "../../deps/test.ts";
 import { Address, CoverageArea, Point } from "../../src/domain/entities.ts";
 
 const coordinates = [

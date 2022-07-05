@@ -1,4 +1,4 @@
-import { ClientPostgreSQL, NessieConfig } from "./deps.ts";
+import { ClientPostgreSQL, NessieConfig } from "./deps/nessie.ts";
 
 const client = new ClientPostgreSQL({
   database: "delivery",

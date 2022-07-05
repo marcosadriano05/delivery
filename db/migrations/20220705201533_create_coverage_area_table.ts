@@ -1,4 +1,8 @@
-import { AbstractMigration, ClientPostgreSQL, Info } from "../../deps.ts";
+import {
+  AbstractMigration,
+  ClientPostgreSQL,
+  Info,
+} from "../../deps/nessie.ts";
 
 export default class extends AbstractMigration<ClientPostgreSQL> {
   /** Runs on migrate */

@@ -1,4 +1,4 @@
-import { assertEquals, assertRejects, describe, it } from "../../deps.ts";
+import { assertEquals, assertRejects, describe, it } from "../../deps/test.ts";
 import {
   FindNearestPartner,
   FindPartnerError,
