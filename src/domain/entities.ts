@@ -39,10 +39,12 @@ export class Address {
 export class CoverageArea {
   type: GeometryType;
   coordinates: Point[][][];
+  areas: Polygon[];
 
   constructor(coordinates: Point[][][]) {
     this.type = GeometryType.MultiPolygon;
     this.coordinates = coordinates;
+    this.areas = this.getAreas();
   }
 
   getAreas(): Polygon[] {
@@ -61,7 +63,7 @@ export class CoverageArea {
   }
 
   isAddressIn(address: Address): boolean {
-    return this.getAreas().some((area) =>
+    return this.areas.some((area) =>
       is_point_in_polygon(address.coordinates, area)
     );
   }
