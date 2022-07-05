@@ -57,13 +57,13 @@ export class FindNearestPartner {
     return partnersWhoCoverTheAddress[partnerIndex];
   }
 
-  coordinatesToPoints = (coordinates: number[][][][]): Point[][][] => {
+  coordinatesToPoints(coordinates: number[][][][]): Point[][][] {
     return coordinates.map((item1) => {
       return item1.map((item2) => {
         return item2.map((item3) => new Point(item3[0], item3[1]));
       });
     });
-  };
+  }
 
   distanceBetweenTwoPoints(pointA: Point, pointB: Point): number {
     return Math.sqrt(
