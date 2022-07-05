@@ -2,7 +2,10 @@ import { assertEquals, describe, it } from "../../deps.ts";
 import { Address, CoverageArea, Point } from "../../src/domain/entities.ts";
 
 const coordinates = [
-  [[[30, 20], [45, 40], [10, 40], [30, 20]], [[26, 34], [34, 36], [30, 30]]],
+  [[[30, 20], [45, 40], [10, 40], [30, 20]], [[26, 34], [34, 36], [30, 30], [
+    26,
+    34,
+  ]]],
   [[[15, 5], [40, 10], [10, 20], [5, 10], [15, 5]]],
 ];
 

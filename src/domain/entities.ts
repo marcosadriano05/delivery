@@ -66,3 +66,13 @@ export class CoverageArea {
     );
   }
 }
+
+export class Partner {
+  constructor(
+    public tradingName: string,
+    public ownerName: string,
+    public document: string,
+    public coverageArea: CoverageArea,
+    public address: Address,
+  ) {}
+}
