@@ -18,7 +18,7 @@ router.get("/partner", async (_req, res) => {
 });
 
 router.post("/partner", async (req, res) => {
-  const body = req.body
+  const body = req.body;
   await repo.save(body);
   res.setStatus(201).json({ message: "Partner created." });
 });

@@ -1,5 +1,5 @@
 export interface PartnerDao {
-  id: number;
+  id?: number;
   tradingName: string;
   ownerName: string;
   document: string;

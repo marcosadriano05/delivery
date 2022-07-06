@@ -1,5 +1,5 @@
 import { Address, CoverageArea, Partner, Point } from "./entities.ts";
-import { PartnerRepository } from "./partner_repository.ts";
+import { PartnerDao, PartnerRepository } from "./partner_repository.ts";
 
 export class FindPartnerError extends Error {
   constructor(message: string) {
@@ -11,23 +11,29 @@ export class FindPartnerError extends Error {
 export class FindNearestPartner {
   constructor(readonly partnerRepository: PartnerRepository) {}
 
-  async exec(lat: number, lon: number): Promise<Partner> {
+  async exec(lat: number, lon: number): Promise<PartnerDao> {
     const partnersDao = await this.partnerRepository.getAll();
 
     const address = new Address(lat, lon);
     const partners = partnersDao.map((partnerDao) => {
-      return new Partner(
+      const coverageArea = new CoverageArea(
+        this.coordinatesToPoints(partnerDao.coverageArea.coordinates),
+      );
+      coverageArea.id = partnerDao.coverageArea.id;
+      const address = new Address(
+        partnerDao.address.coordinates[0],
+        partnerDao.address.coordinates[1],
+      );
+      address.id = partnerDao.address.id;
+      const partner = new Partner(
         partnerDao.tradingName,
         partnerDao.ownerName,
         partnerDao.document,
-        new CoverageArea(
-          this.coordinatesToPoints(partnerDao.coverageArea.coordinates),
-        ),
-        new Address(
-          partnerDao.address.coordinates[0],
-          partnerDao.address.coordinates[1],
-        ),
+        coverageArea,
+        address,
       );
+      partner.id = partnerDao.id;
+      return partner;
     });
 
     const partnersWhoCoverTheAddress = partners.filter((partner) =>
@@ -53,8 +59,9 @@ export class FindNearestPartner {
         partnerIndex = i;
       }
     }
+    const nearestPartner = partnersWhoCoverTheAddress[partnerIndex];
 
-    return partnersWhoCoverTheAddress[partnerIndex];
+    return this.transformPartnerToPartnerDao(nearestPartner)
   }
 
   coordinatesToPoints(coordinates: number[][][][]): Point[][][] {
@@ -65,9 +72,40 @@ export class FindNearestPartner {
     });
   }
 
+  pointsToCoordinates(points: Point[][][]): number[][][][] {
+    return points.map((item1) => {
+      return item1.map((item2) => {
+        return item2.map((item3) => [item3.x, item3.y]);
+      });
+    });
+  }
+
   distanceBetweenTwoPoints(pointA: Point, pointB: Point): number {
     return Math.sqrt(
       Math.pow(pointB.x - pointA.x, 2) + Math.pow(pointB.y - pointA.y, 2),
     );
+  }
+
+  transformPartnerToPartnerDao(partner: Partner): PartnerDao {
+    const partnerDao: PartnerDao = {
+      id: partner.id,
+      ownerName: partner.ownerName,
+      tradingName: partner.tradingName,
+      document: partner.document,
+      address: {
+        id: partner.address.id,
+        type: partner.address.type,
+        coordinates: [
+          partner.address.coordinates.x,
+          partner.address.coordinates.y,
+        ],
+      },
+      coverageArea: {
+        id: partner.coverageArea.id,
+        type: partner.coverageArea.type,
+        coordinates: this.pointsToCoordinates(partner.coverageArea.coordinates),
+      },
+    };
+    return partnerDao;
   }
 }

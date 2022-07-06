@@ -58,13 +58,13 @@ describe("FindNearestParnet", () => {
   it("should return the nearest partner", async () => {
     let partner = await findNearestPartner.exec(23, 12);
 
-    assertEquals(partner.address.coordinates.x, 20);
-    assertEquals(partner.address.coordinates.y, 5);
+    assertEquals(partner.address.coordinates[0], 20);
+    assertEquals(partner.address.coordinates[1], 5);
 
     partner = await findNearestPartner.exec(3, 15);
 
-    assertEquals(partner.address.coordinates.x, 10);
-    assertEquals(partner.address.coordinates.y, 10);
+    assertEquals(partner.address.coordinates[0], 10);
+    assertEquals(partner.address.coordinates[1], 10);
   });
 
   it("should throw an error if no partner cover the address", () => {

@@ -27,6 +27,7 @@ export enum GeometryType {
 }
 
 export class Address {
+  id?: number;
   type: GeometryType;
   coordinates: Point;
 
@@ -37,6 +38,7 @@ export class Address {
 }
 
 export class CoverageArea {
+  id?: number;
   type: GeometryType;
   coordinates: Point[][][];
   areas: Polygon[];
@@ -70,6 +72,8 @@ export class CoverageArea {
 }
 
 export class Partner {
+  id?: number;
+
   constructor(
     public tradingName: string,
     public ownerName: string,
