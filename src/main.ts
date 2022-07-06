@@ -9,10 +9,12 @@ const partner: PartnerDao = {
   tradingName: "trading",
   document: "document",
   address: {
+    id: 0,
     type: "Point",
     coordinates: [10, 10],
   },
   coverageArea: {
+    id: 0,
     type: "MultiPolygon",
     coordinates: [[[[10, 10], [20, 20]]]],
   },
@@ -20,7 +22,8 @@ const partner: PartnerDao = {
 
 async function abc() {
   await client.connect();
-  await repo.save(partner);
+  await repo.getAll()
+  // await repo.save(partner);
   await client.end();
 }
 abc();

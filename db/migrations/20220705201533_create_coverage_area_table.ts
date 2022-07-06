@@ -10,7 +10,7 @@ export default class extends AbstractMigration<ClientPostgreSQL> {
     await this.client.queryArray(`CREATE TABLE coverage_area (
 			id INT GENERATED ALWAYS AS IDENTITY,
 			type TEXT,
-            coordinates TEXT,
+            coordinates REAL[][][][],
             partner_id INT,
 			PRIMARY KEY (id),
             CONSTRAINT fk_partner
