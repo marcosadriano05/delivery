@@ -63,39 +63,39 @@ export class PostgresRepository implements PartnerRepository {
 
 function transformDataToPartnerDao(data: any[]): PartnerDao {
   const adrCoordinates = data[6].map((value: string) => Number(value));
-    const coverageCoordinates = data[9].map((item1: any[]) => {
-      return item1.map((item2: any[]) => {
-        return item2.map((item3: any[]) => {
-          return item3.map((item4) => Number(item4));
-        });
+  const coverageCoordinates = data[9].map((item1: any[]) => {
+    return item1.map((item2: any[]) => {
+      return item2.map((item3: any[]) => {
+        return item3.map((item4) => Number(item4));
       });
     });
-    const partnerDao: PartnerDao = {
-      id: data[0],
-      tradingName: data[1],
-      ownerName: data[2],
-      document: data[3],
-      address: {
-        id: data[4],
-        type: data[5],
-        coordinates: adrCoordinates,
-      },
-      coverageArea: {
-        id: data[7],
-        type: data[8],
-        coordinates: coverageCoordinates,
-      },
-    };
-    return partnerDao;
+  });
+  const partnerDao: PartnerDao = {
+    id: data[0],
+    tradingName: data[1],
+    ownerName: data[2],
+    document: data[3],
+    address: {
+      id: data[4],
+      type: data[5],
+      coordinates: adrCoordinates,
+    },
+    coverageArea: {
+      id: data[7],
+      type: data[8],
+      coordinates: coverageCoordinates,
+    },
+  };
+  return partnerDao;
 }
 
 function transformInPartnerDaoArray(data: any): PartnerDao[] {
   return data.rows.map((partner: any[]) => {
-    return transformDataToPartnerDao(partner)
+    return transformDataToPartnerDao(partner);
   });
 }
 
 function transformInPartnerDao(data: any): PartnerDao {
   const partner = data.rows[0];
-  return transformDataToPartnerDao(partner)
+  return transformDataToPartnerDao(partner);
 }
