@@ -17,6 +17,12 @@ router.get("/partner", async (_req, res) => {
   res.setStatus(200).json(partners);
 });
 
+router.post("/partner", async (req, res) => {
+  const body = req.body
+  await repo.save(body);
+  res.setStatus(201).json({ message: "Partner created." });
+});
+
 router.post("/partner/nearest", async (req, res) => {
   try {
     const body = req.body;

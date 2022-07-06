@@ -4,12 +4,12 @@ export interface PartnerDao {
   ownerName: string;
   document: string;
   coverageArea: {
-    id: number;
+    id?: number;
     type: string;
     coordinates: number[][][][];
   };
   address: {
-    id: number;
+    id?: number;
     type: string;
     coordinates: number[];
   };
