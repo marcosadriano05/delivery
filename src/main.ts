@@ -22,7 +22,8 @@ const partner: PartnerDao = {
 
 async function abc() {
   await client.connect();
-  await repo.getAll()
+  await repo.getById(1);
+  // await repo.getAll();
   // await repo.save(partner);
   await client.end();
 }

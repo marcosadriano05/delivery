@@ -5,6 +5,10 @@ import {
 import { fakeData } from "./fake_data.ts";
 
 export class FakePartnerRepo implements PartnerRepository {
+  getById(id: number): Promise<PartnerDao> {
+    throw new Error("Method not implemented.");
+  }
+
   save(partner: PartnerDao): Promise<void> {
     throw new Error("Method not implemented.");
   }
