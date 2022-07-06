@@ -15,4 +15,5 @@ export interface PartnerDao {
 
 export interface PartnerRepository {
   getAll(): Promise<PartnerDao[]>;
+  save(partner: PartnerDao): Promise<void>;
 }

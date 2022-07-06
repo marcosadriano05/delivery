@@ -3,18 +3,8 @@ import {
   FindNearestPartner,
   FindPartnerError,
 } from "../../src/domain/find_nearest_partner.ts";
-import {
-  PartnerDao,
-  PartnerRepository,
-} from "../../src/domain/partner_repository.ts";
 import { Point } from "../../src/domain/entities.ts";
-import { fakeData } from "../mock/fake_data.ts";
-
-class FakePartnerRepo implements PartnerRepository {
-  getAll(): Promise<PartnerDao[]> {
-    return new Promise((resolve) => resolve(fakeData));
-  }
-}
+import { FakePartnerRepo } from "../mock/fake_partner_repo.ts";
 
 const findNearestPartner = new FindNearestPartner(new FakePartnerRepo());
 
