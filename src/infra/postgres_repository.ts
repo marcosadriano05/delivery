@@ -61,10 +61,9 @@ export class PostgresRepository implements PartnerRepository {
   }
 }
 
-function transformInPartnerDaoArray(data: any): PartnerDao[] {
-  return data.rows.map((partner: any[]) => {
-    const adrCoordinates = partner[6].map((value: string) => Number(value));
-    const coverageCoordinates = partner[9].map((item1: any[]) => {
+function transformDataToPartnerDao(data: any[]): PartnerDao {
+  const adrCoordinates = data[6].map((value: string) => Number(value));
+    const coverageCoordinates = data[9].map((item1: any[]) => {
       return item1.map((item2: any[]) => {
         return item2.map((item3: any[]) => {
           return item3.map((item4) => Number(item4));
@@ -72,50 +71,31 @@ function transformInPartnerDaoArray(data: any): PartnerDao[] {
       });
     });
     const partnerDao: PartnerDao = {
-      id: partner[0],
-      tradingName: partner[1],
-      ownerName: partner[2],
-      document: partner[3],
+      id: data[0],
+      tradingName: data[1],
+      ownerName: data[2],
+      document: data[3],
       address: {
-        id: partner[4],
-        type: partner[5],
+        id: data[4],
+        type: data[5],
         coordinates: adrCoordinates,
       },
       coverageArea: {
-        id: partner[7],
-        type: partner[8],
+        id: data[7],
+        type: data[8],
         coordinates: coverageCoordinates,
       },
     };
     return partnerDao;
+}
+
+function transformInPartnerDaoArray(data: any): PartnerDao[] {
+  return data.rows.map((partner: any[]) => {
+    return transformDataToPartnerDao(partner)
   });
 }
 
 function transformInPartnerDao(data: any): PartnerDao {
   const partner = data.rows[0];
-  const adrCoordinates = partner[6].map((value: string) => Number(value));
-  const coverageCoordinates = partner[9].map((item1: any[]) => {
-    return item1.map((item2: any[]) => {
-      return item2.map((item3: any[]) => {
-        return item3.map((item4) => Number(item4));
-      });
-    });
-  });
-  const partnerDao: PartnerDao = {
-    id: partner[0],
-    tradingName: partner[1],
-    ownerName: partner[2],
-    document: partner[3],
-    address: {
-      id: partner[4],
-      type: partner[5],
-      coordinates: adrCoordinates,
-    },
-    coverageArea: {
-      id: partner[7],
-      type: partner[8],
-      coordinates: coverageCoordinates,
-    },
-  };
-  return partnerDao;
+  return transformDataToPartnerDao(partner)
 }
