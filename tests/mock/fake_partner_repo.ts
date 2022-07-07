@@ -6,7 +6,7 @@ export class FakePartnerRepo implements Repository<PartnerDto> {
     throw new Error("Method not implemented.");
   }
 
-  save(partner: PartnerDto): Promise<void> {
+  save(data: PartnerDto): Promise<void> {
     throw new Error("Method not implemented.");
   }
 

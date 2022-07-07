@@ -26,15 +26,15 @@ export class PostgresRepository implements Repository<PartnerDto> {
     return transformInPartnerDtoArray(partners);
   }
 
-  async save(partner: PartnerDto): Promise<void> {
+  async save(data: PartnerDto): Promise<void> {
     const savedPartner = await this.client.queryArray(
       `INSERT INTO partner (trading_name, owner_name, document)
       VALUES ($1, $2, $3)
       RETURNING id;`,
       [
-        partner.tradingName,
-        partner.ownerName,
-        partner.document,
+        data.tradingName,
+        data.ownerName,
+        data.document,
       ],
     );
     const partnerId = savedPartner.rows[0][0];
@@ -43,8 +43,8 @@ export class PostgresRepository implements Repository<PartnerDto> {
       VALUES ($1, $2, $3)
       RETURNING id;`,
       [
-        partner.address.type,
-        partner.address.coordinates,
+        data.address.type,
+        data.address.coordinates,
         partnerId,
       ],
     );
@@ -53,8 +53,8 @@ export class PostgresRepository implements Repository<PartnerDto> {
       VALUES ($1, $2, $3)
       RETURNING id;`,
       [
-        partner.coverageArea.type,
-        partner.coverageArea.coordinates,
+        data.coverageArea.type,
+        data.coverageArea.coordinates,
         partnerId,
       ],
     );
