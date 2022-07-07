@@ -36,3 +36,7 @@ To run tests:
 ```shell
 deno task test
 ```
+
+## Production
+
+The API is available at this [link](https://marcosadriano05-delivery.deno.dev/).
