@@ -17,8 +17,7 @@ export default class extends AbstractMigration<ClientPostgreSQL> {
         CONSTRAINT fk_partner
         FOREIGN KEY (partner_id) 
         REFERENCES partner (id)
-        ON DELETE CASCADE
-		  );`,
+        ON DELETE CASCADE);`,
     );
   }
 

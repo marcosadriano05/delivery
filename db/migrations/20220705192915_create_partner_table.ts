@@ -13,8 +13,7 @@ export default class extends AbstractMigration<ClientPostgreSQL> {
         trading_name TEXT,
         owner_name TEXT,
         document TEXT,
-        PRIMARY KEY (id)
-		  );`,
+        PRIMARY KEY (id));`,
     );
   }
 

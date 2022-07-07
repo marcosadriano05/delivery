@@ -1,7 +1,7 @@
-import { PartnerDto, PartnerRepository } from "../domain/partner_repository.ts";
+import { PartnerDto, Repository } from "../domain/repository.ts";
 import { Client } from "../../deps/postgres.ts";
 
-export class PostgresRepository implements PartnerRepository {
+export class PostgresRepository implements Repository<PartnerDto> {
   constructor(
     private readonly client: Client,
   ) {}

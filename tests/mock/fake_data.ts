@@ -1,4 +1,4 @@
-import { PartnerDto } from "../../src/domain/partner_repository.ts";
+import { PartnerDto } from "../../src/domain/repository.ts";
 
 export const fakeData: PartnerDto[] = [{
   id: 1,

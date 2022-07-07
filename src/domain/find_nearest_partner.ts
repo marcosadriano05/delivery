@@ -1,5 +1,5 @@
 import { Address, CoverageArea, Partner, Point } from "./entities.ts";
-import { PartnerDto, PartnerRepository } from "./partner_repository.ts";
+import { PartnerDto, Repository } from "./repository.ts";
 
 export class FindPartnerError extends Error {
   constructor(message: string) {
@@ -9,7 +9,7 @@ export class FindPartnerError extends Error {
 }
 
 export class FindNearestPartner {
-  constructor(readonly partnerRepository: PartnerRepository) {}
+  constructor(readonly partnerRepository: Repository<PartnerDto>) {}
 
   async exec(lat: number, lon: number): Promise<PartnerDto> {
     const partnersDao = await this.partnerRepository.getAll();

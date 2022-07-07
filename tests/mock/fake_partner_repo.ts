@@ -1,10 +1,7 @@
-import {
-  PartnerDto,
-  PartnerRepository,
-} from "../../src/domain/partner_repository.ts";
+import { PartnerDto, Repository } from "../../src/domain/repository.ts";
 import { fakeData } from "./fake_data.ts";
 
-export class FakePartnerRepo implements PartnerRepository {
+export class FakePartnerRepo implements Repository<PartnerDto> {
   getById(id: number): Promise<PartnerDto> {
     throw new Error("Method not implemented.");
   }
