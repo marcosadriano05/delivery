@@ -12,10 +12,10 @@ export class FindNearestPartner {
   constructor(readonly partnerRepository: Repository<PartnerDto>) {}
 
   async exec(lat: number, lon: number): Promise<PartnerDto> {
-    const partnersDao = await this.partnerRepository.getAll();
+    const partnersDto = await this.partnerRepository.getAll();
 
     const address = new Address(lat, lon);
-    const partners = partnersDao.map((partnerDto) => {
+    const partners = partnersDto.map((partnerDto) => {
       return this.transformPartnerDtoToPartner(partnerDto);
     });
 
