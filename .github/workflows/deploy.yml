@@ -26,6 +26,7 @@ jobs:
         run: deno test --unstable --allow-net --allow-env --allow-read --allow-write
 
   deploy:
+    runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: read
