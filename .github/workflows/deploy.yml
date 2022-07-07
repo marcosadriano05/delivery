@@ -37,4 +37,4 @@ jobs:
         with:
           project: marcosadriano05-delivery
           entrypoint: src/main/server.js
-          entry: dist
+          root: dist
