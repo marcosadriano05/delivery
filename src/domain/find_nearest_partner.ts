@@ -1,5 +1,5 @@
 import { Address, CoverageArea, Partner, Point } from "./entities.ts";
-import { PartnerDao, PartnerRepository } from "./partner_repository.ts";
+import { PartnerDto, PartnerRepository } from "./partner_repository.ts";
 
 export class FindPartnerError extends Error {
   constructor(message: string) {
@@ -11,29 +11,12 @@ export class FindPartnerError extends Error {
 export class FindNearestPartner {
   constructor(readonly partnerRepository: PartnerRepository) {}
 
-  async exec(lat: number, lon: number): Promise<PartnerDao> {
+  async exec(lat: number, lon: number): Promise<PartnerDto> {
     const partnersDao = await this.partnerRepository.getAll();
 
     const address = new Address(lat, lon);
-    const partners = partnersDao.map((partnerDao) => {
-      const coverageArea = new CoverageArea(
-        this.coordinatesToPoints(partnerDao.coverageArea.coordinates),
-      );
-      coverageArea.id = partnerDao.coverageArea.id;
-      const address = new Address(
-        partnerDao.address.coordinates[0],
-        partnerDao.address.coordinates[1],
-      );
-      address.id = partnerDao.address.id;
-      const partner = new Partner(
-        partnerDao.tradingName,
-        partnerDao.ownerName,
-        partnerDao.document,
-        coverageArea,
-        address,
-      );
-      partner.id = partnerDao.id;
-      return partner;
+    const partners = partnersDao.map((partnerDto) => {
+      return this.transformPartnerDtoToPartner(partnerDto);
     });
 
     const partnersWhoCoverTheAddress = partners.filter((partner) =>
@@ -61,7 +44,7 @@ export class FindNearestPartner {
     }
     const nearestPartner = partnersWhoCoverTheAddress[partnerIndex];
 
-    return this.transformPartnerToPartnerDao(nearestPartner)
+    return this.transformPartnerToPartnerDto(nearestPartner);
   }
 
   coordinatesToPoints(coordinates: number[][][][]): Point[][][] {
@@ -86,8 +69,8 @@ export class FindNearestPartner {
     );
   }
 
-  transformPartnerToPartnerDao(partner: Partner): PartnerDao {
-    const partnerDao: PartnerDao = {
+  transformPartnerToPartnerDto(partner: Partner): PartnerDto {
+    const partnerDto: PartnerDto = {
       id: partner.id,
       ownerName: partner.ownerName,
       tradingName: partner.tradingName,
@@ -106,6 +89,27 @@ export class FindNearestPartner {
         coordinates: this.pointsToCoordinates(partner.coverageArea.coordinates),
       },
     };
-    return partnerDao;
+    return partnerDto;
+  }
+
+  transformPartnerDtoToPartner(partnerDto: PartnerDto): Partner {
+    const coverageArea = new CoverageArea(
+      this.coordinatesToPoints(partnerDto.coverageArea.coordinates),
+    );
+    coverageArea.id = partnerDto.coverageArea.id;
+    const address = new Address(
+      partnerDto.address.coordinates[0],
+      partnerDto.address.coordinates[1],
+    );
+    address.id = partnerDto.address.id;
+    const partner = new Partner(
+      partnerDto.tradingName,
+      partnerDto.ownerName,
+      partnerDto.document,
+      coverageArea,
+      address,
+    );
+    partner.id = partnerDto.id;
+    return partner;
   }
 }

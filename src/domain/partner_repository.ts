@@ -1,4 +1,4 @@
-export interface PartnerDao {
+export interface PartnerDto {
   id?: number;
   tradingName: string;
   ownerName: string;
@@ -16,7 +16,7 @@ export interface PartnerDao {
 }
 
 export interface PartnerRepository {
-  getAll(): Promise<PartnerDao[]>;
-  getById(id: number): Promise<PartnerDao>;
-  save(partner: PartnerDao): Promise<void>;
+  getAll(): Promise<PartnerDto[]>;
+  getById(id: number): Promise<PartnerDto>;
+  save(partner: PartnerDto): Promise<void>;
 }

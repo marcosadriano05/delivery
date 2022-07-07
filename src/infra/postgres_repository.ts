@@ -1,4 +1,4 @@
-import { PartnerDao, PartnerRepository } from "../domain/partner_repository.ts";
+import { PartnerDto, PartnerRepository } from "../domain/partner_repository.ts";
 import { Client } from "../../deps/postgres.ts";
 
 export class PostgresRepository implements PartnerRepository {
@@ -6,7 +6,7 @@ export class PostgresRepository implements PartnerRepository {
     private readonly client: Client,
   ) {}
 
-  async getById(id: number): Promise<PartnerDao> {
+  async getById(id: number): Promise<PartnerDto> {
     const partner = await this.client.queryArray(
       `SELECT p.id, p.trading_name, p.owner_name, p."document", a.id, a."type", a.coordinates, ca.id, ca."type", ca.coordinates FROM partner p
       INNER JOIN address a ON a.partner_id = p.id 
@@ -14,19 +14,19 @@ export class PostgresRepository implements PartnerRepository {
       WHERE p.id = $1;`,
       [id],
     );
-    return transformInPartnerDao(partner);
+    return transformInPartnerDto(partner);
   }
 
-  async getAll(): Promise<PartnerDao[]> {
+  async getAll(): Promise<PartnerDto[]> {
     const partners = await this.client.queryArray(
       `SELECT p.id, p.trading_name, p.owner_name, p."document", a.id, a."type", a.coordinates, ca.id, ca."type", ca.coordinates FROM partner p
       INNER JOIN address a ON a.partner_id = p.id 
       INNER JOIN coverage_area ca ON ca.partner_id = p.id;`,
     );
-    return transformInPartnerDaoArray(partners);
+    return transformInPartnerDtoArray(partners);
   }
 
-  async save(partner: PartnerDao): Promise<void> {
+  async save(partner: PartnerDto): Promise<void> {
     const savedPartner = await this.client.queryArray(
       `INSERT INTO partner (trading_name, owner_name, document)
       VALUES ($1, $2, $3)
@@ -61,7 +61,7 @@ export class PostgresRepository implements PartnerRepository {
   }
 }
 
-function transformDataToPartnerDao(data: any[]): PartnerDao {
+function transformDataToPartnerDto(data: any[]): PartnerDto {
   const adrCoordinates = data[6].map((value: string) => Number(value));
   const coverageCoordinates = data[9].map((item1: any[]) => {
     return item1.map((item2: any[]) => {
@@ -70,7 +70,7 @@ function transformDataToPartnerDao(data: any[]): PartnerDao {
       });
     });
   });
-  const partnerDao: PartnerDao = {
+  const partnerDto: PartnerDto = {
     id: data[0],
     tradingName: data[1],
     ownerName: data[2],
@@ -86,16 +86,16 @@ function transformDataToPartnerDao(data: any[]): PartnerDao {
       coordinates: coverageCoordinates,
     },
   };
-  return partnerDao;
+  return partnerDto;
 }
 
-function transformInPartnerDaoArray(data: any): PartnerDao[] {
+function transformInPartnerDtoArray(data: any): PartnerDto[] {
   return data.rows.map((partner: any[]) => {
-    return transformDataToPartnerDao(partner);
+    return transformDataToPartnerDto(partner);
   });
 }
 
-function transformInPartnerDao(data: any): PartnerDao {
+function transformInPartnerDto(data: any): PartnerDto {
   const partner = data.rows[0];
-  return transformDataToPartnerDao(partner);
+  return transformDataToPartnerDto(partner);
 }

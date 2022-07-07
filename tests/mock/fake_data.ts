@@ -1,6 +1,6 @@
-import { PartnerDao } from "../../src/domain/partner_repository.ts";
+import { PartnerDto } from "../../src/domain/partner_repository.ts";
 
-export const fakeData: PartnerDao[] = [{
+export const fakeData: PartnerDto[] = [{
   id: 1,
   tradingName: "trading 1",
   ownerName: "owner 1",
