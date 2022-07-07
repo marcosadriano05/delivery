@@ -7,20 +7,32 @@ const router = Router();
 const repo = new PostgresRepository(client);
 
 router.get("/partner/:id", async (req, res) => {
-  const id = req.params.id;
-  const partner = await repo.getById(Number(id));
-  res.setStatus(200).json(partner);
+  try {
+    const id = req.params.id;
+    const partner = await repo.getById(Number(id));
+    res.setStatus(200).json(partner);
+  } catch (_error) {
+    res.setStatus(404).json({ message: "Partner not found." })
+  }
 });
 
 router.get("/partner", async (_req, res) => {
-  const partners = await repo.getAll();
-  res.setStatus(200).json(partners);
+  try {
+    const partners = await repo.getAll();
+    res.setStatus(200).json(partners);
+  } catch (_error) {
+    res.setStatus(500).json({ message: "Server error." })
+  }
 });
 
 router.post("/partner", async (req, res) => {
-  const body = req.body;
-  await repo.save(body);
-  res.setStatus(201).json({ message: "Partner created." });
+  try {
+    const body = req.body;
+    await repo.save(body);
+    res.setStatus(201).json({ message: "Partner created." });
+  } catch (_error) {
+    res.setStatus(500).json({ message: "Error to create partner." })
+  }
 });
 
 router.post("/partner/nearest", async (req, res) => {
