@@ -10,7 +10,7 @@ export class FindNearestController implements Controller {
 
   async handle(req: HttpRequest): Promise<HttpResponse> {
     try {
-      if (req.body === undefined) {
+      if (req.body === undefined || Object.keys(req.body).length === 0) {
         return badRequest("Body params missing: lat, lon.");
       }
       const body = req.body;
@@ -20,7 +20,7 @@ export class FindNearestController implements Controller {
       if (body.lat === undefined) {
         return badRequest("Body params missing: lat.");
       }
-      if (typeof body.lat !== "number" && typeof body.lon !== "number") {
+      if (typeof body.lat !== "number" || typeof body.lon !== "number") {
         return badRequest("Body params lat and lon must be numbers.");
       }
       const service = new FindNearestPartner(this.repository);

@@ -23,7 +23,7 @@ describe("Find nearest partner controller", () => {
 
   it("should return status 400 if lat or lon body params are not numbers", async () => {
     const response = await controller.handle({
-      body: { lat: "10", lon: "10" },
+      body: { lat: 10, lon: "10" },
     });
     assertEquals(response.statusCode, 400);
     assertEquals(
