@@ -37,7 +37,7 @@ jobs:
           entrypoint: src/main/server.ts
       
       - name: Run migrations
-          run: deno run -A --unstable https://deno.land/x/nessie/cli.ts migrate
+        run: deno run -A --unstable https://deno.land/x/nessie/cli.ts migrate
 
       - name: Run seeds
         run: deno run -A --unstable https://deno.land/x/nessie/cli.ts seed
