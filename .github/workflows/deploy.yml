@@ -1,4 +1,4 @@
-name: Deno CI
+name: Deploy
 
 on:
   push:
@@ -25,19 +25,19 @@ jobs:
       - name: Run tests
         run: deno test --unstable --allow-net --allow-env --allow-read --allow-write
 
-job:
-  permissions:
-    id-token: write
-    contents: read
-  steps:
-    - name: Deploy to Deno Deploy
-      uses: denoland/deployctl@v1
-      with:
-        project: marcosadriano05-delivery
-        entrypoint: src/main/server.ts
-    
-    - name: Run migrations
-        run: deno run -A --unstable https://deno.land/x/nessie/cli.ts migrate
+  deploy:
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Deploy to Deno Deploy
+        uses: denoland/deployctl@v1
+        with:
+          project: marcosadriano05-delivery
+          entrypoint: src/main/server.ts
+      
+      - name: Run migrations
+          run: deno run -A --unstable https://deno.land/x/nessie/cli.ts migrate
 
-    - name: Run seeds
-      run: deno run -A --unstable https://deno.land/x/nessie/cli.ts seed
+      - name: Run seeds
+        run: deno run -A --unstable https://deno.land/x/nessie/cli.ts seed
