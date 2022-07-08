@@ -6,7 +6,7 @@ export class PostgresRepository implements Repository<PartnerDto> {
     private readonly client: Client,
   ) {}
 
-  async getById(id: number): Promise<PartnerDto> {
+  async getById(id: number): Promise<PartnerDto | null> {
     const partner = await this.client.queryArray(
       `SELECT p.id, p.trading_name, p.owner_name, p."document", a.id, a."type", a.coordinates, ca.id, ca."type", ca.coordinates FROM partner p
       INNER JOIN address a ON a.partner_id = p.id 
@@ -14,6 +14,9 @@ export class PostgresRepository implements Repository<PartnerDto> {
       WHERE p.id = $1;`,
       [id],
     );
+    if (partner.rows.length === 0) {
+      return null;
+    }
     return transformInPartnerDto(partner);
   }
 

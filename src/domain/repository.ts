@@ -17,6 +17,6 @@ export interface PartnerDto {
 
 export interface Repository<T> {
   getAll(): Promise<T[]>;
-  getById(id: number): Promise<T>;
+  getById(id: number): Promise<T | null>;
   save(data: T): Promise<void>;
 }

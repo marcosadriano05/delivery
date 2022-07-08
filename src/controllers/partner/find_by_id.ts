@@ -1,5 +1,6 @@
 import { Controller, HttpRequest, HttpResponse } from "../controller.ts";
 import { PartnerDto, Repository } from "../../domain/repository.ts";
+import { badRequest, notFound, ok, serverError } from "../responses.ts";
 
 export class FindByIdController implements Controller {
   constructor(
@@ -9,13 +10,16 @@ export class FindByIdController implements Controller {
   async handle(req: HttpRequest): Promise<HttpResponse> {
     try {
       const id = req.params.id;
+      if (isNaN(Number(id))) {
+        return badRequest("Id param should have a number format.");
+      }
       const partner = await this.repository.getById(Number(id));
-      return {
-        statusCode: 200,
-        body: partner,
-      };
+      if (!partner) {
+        return notFound("Partner not found.");
+      }
+      return ok(partner);
     } catch (_error) {
-      return { statusCode: 404, body: { message: "Partner not found." } };
+      return serverError("Server error.");
     }
   }
 }
