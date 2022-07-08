@@ -66,6 +66,7 @@ describe("Find by id partner controller", () => {
 
     try {
       assertEquals(response.statusCode, 500);
+      assertEquals(response.body.message, "Server error.");
     } finally {
       getByIdStub.restore();
     }

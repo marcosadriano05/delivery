@@ -27,7 +27,7 @@ export class FindNearestController implements Controller {
       const partner = await service.exec(body.lat, body.lon);
       return ok(partner);
     } catch (error) {
-      return serverError(error.message);
+      return serverError(error);
     }
   }
 }

@@ -18,8 +18,8 @@ export class FindByIdController implements Controller {
         return notFound("Partner not found.");
       }
       return ok(partner);
-    } catch (_error) {
-      return serverError("Server error.");
+    } catch (error) {
+      return serverError(error);
     }
   }
 }

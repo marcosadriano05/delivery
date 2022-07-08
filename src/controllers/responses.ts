@@ -10,9 +10,9 @@ export const notFound = (message: string): HttpResponse => ({
   body: { message },
 });
 
-export const serverError = (message: string): HttpResponse => ({
+export const serverError = (error?: Error): HttpResponse => ({
   statusCode: 500,
-  body: { message },
+  body: { message: "Server error." },
 });
 
 export const ok = (data: any): HttpResponse => ({

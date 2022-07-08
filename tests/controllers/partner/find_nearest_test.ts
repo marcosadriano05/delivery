@@ -1,8 +1,15 @@
-import { assertEquals, describe, it } from "../../../deps/test.ts";
+import {
+  assertEquals,
+  describe,
+  it,
+  returnsNext,
+  stub,
+} from "../../../deps/test.ts";
 import { FindNearestController } from "../../../src/controllers/partner/find_nearest.ts";
 import { FakePartnerRepo } from "../../mock/fake_partner_repo.ts";
 
-const controller = new FindNearestController(new FakePartnerRepo());
+const repo = new FakePartnerRepo();
+const controller = new FindNearestController(repo);
 
 describe("Find nearest partner controller", () => {
   it("should return status 400 if no lat or lon body params are provided", async () => {
@@ -30,5 +37,27 @@ describe("Find nearest partner controller", () => {
       response.body.message,
       "Body params lat and lon must be numbers.",
     );
+  });
+
+  it("should return status 500 getById throws", async () => {
+    const getAllStub = stub(
+      repo,
+      "getAll",
+      returnsNext([new Promise((resolve, reject) => reject(null))]),
+    );
+
+    const response = await controller.handle({
+      body: {
+        lat: 10,
+        lon: 10,
+      },
+    });
+
+    try {
+      assertEquals(response.statusCode, 500);
+      assertEquals(response.body.message, "Server error.");
+    } finally {
+      getAllStub.restore();
+    }
   });
 });
