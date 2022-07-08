@@ -1,11 +1,13 @@
 import { Controller, HttpRequest, HttpResponse } from "../controller.ts";
 import { PartnerDto, Repository } from "../../domain/repository.ts";
+import { Geometry } from "../../domain/geometry.ts";
 import { FindNearestPartner } from "../../domain/find_nearest_partner.ts";
 import { badRequest, ok, serverError } from "../responses.ts";
 
 export class FindNearestController implements Controller {
   constructor(
     private readonly repository: Repository<PartnerDto>,
+    private readonly geometryLib: Geometry,
   ) {}
 
   async handle(req: HttpRequest): Promise<HttpResponse> {
@@ -23,7 +25,7 @@ export class FindNearestController implements Controller {
       if (typeof body.lat !== "number" || typeof body.lon !== "number") {
         return badRequest("Body params lat and lon must be numbers.");
       }
-      const service = new FindNearestPartner(this.repository);
+      const service = new FindNearestPartner(this.repository, this.geometryLib);
       const partner = await service.exec(body.lat, body.lon);
       return ok(partner);
     } catch (error) {

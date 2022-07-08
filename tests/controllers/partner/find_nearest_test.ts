@@ -7,9 +7,11 @@ import {
 } from "../../../deps/test.ts";
 import { FindNearestController } from "../../../src/controllers/partner/find_nearest.ts";
 import { FakePartnerRepo } from "../../mock/fake_partner_repo.ts";
+import { FakeGeometryLib } from "../../mock/fake_geometry_lib.ts";
 
 const repo = new FakePartnerRepo();
-const controller = new FindNearestController(repo);
+const geometryLib = new FakeGeometryLib();
+const controller = new FindNearestController(repo, geometryLib);
 
 describe("Find nearest partner controller", () => {
   it("should return status 400 if no lat or lon body params are provided", async () => {

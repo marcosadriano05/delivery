@@ -4,9 +4,12 @@ import {
   FindPartnerError,
 } from "../../src/domain/find_nearest_partner.ts";
 import { Point } from "../../src/domain/entities.ts";
+import { GeometryWasmLib } from "../../src/infra/geometry_wasm_lib.ts";
 import { FakePartnerRepo } from "../mock/fake_partner_repo.ts";
 
-const findNearestPartner = new FindNearestPartner(new FakePartnerRepo());
+const gemoetryLib = new GeometryWasmLib();
+const repo = new FakePartnerRepo();
+const findNearestPartner = new FindNearestPartner(repo, gemoetryLib);
 
 describe("FindNearestParnet", () => {
   it("should convert coordinates to points", () => {

@@ -1,5 +1,4 @@
-import { instantiate } from "../../lib/rs_lib.generated.js";
-const { is_point_in_polygon } = await instantiate();
+import { Geometry } from "./geometry.ts";
 
 export class Point {
   x: number;
@@ -42,11 +41,13 @@ export class CoverageArea {
   type: GeometryType;
   coordinates: Point[][][];
   areas: Polygon[];
+  geometryLib: Geometry;
 
-  constructor(coordinates: Point[][][]) {
+  constructor(coordinates: Point[][][], geometryLib: Geometry) {
     this.type = GeometryType.MultiPolygon;
     this.coordinates = coordinates;
     this.areas = this.getAreas();
+    this.geometryLib = geometryLib;
   }
 
   getAreas(): Polygon[] {
@@ -66,7 +67,7 @@ export class CoverageArea {
 
   isAddressIn(address: Address): boolean {
     return this.areas.some((area) =>
-      is_point_in_polygon(address.coordinates, area)
+      this.geometryLib.isPointInsidePolygon(address.coordinates, area)
     );
   }
 }

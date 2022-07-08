@@ -1,5 +1,6 @@
 import { Address, CoverageArea, Partner, Point } from "./entities.ts";
 import { PartnerDto, Repository } from "./repository.ts";
+import { Geometry } from "./geometry.ts";
 
 export class FindPartnerError extends Error {
   constructor(message: string) {
@@ -9,7 +10,10 @@ export class FindPartnerError extends Error {
 }
 
 export class FindNearestPartner {
-  constructor(readonly partnerRepository: Repository<PartnerDto>) {}
+  constructor(
+    readonly partnerRepository: Repository<PartnerDto>,
+    readonly geometryLib: Geometry,
+  ) {}
 
   async exec(lat: number, lon: number): Promise<PartnerDto> {
     const partnersDto = await this.partnerRepository.getAll();
@@ -95,6 +99,7 @@ export class FindNearestPartner {
   transformPartnerDtoToPartner(partnerDto: PartnerDto): Partner {
     const coverageArea = new CoverageArea(
       this.coordinatesToPoints(partnerDto.coverageArea.coordinates),
+      this.geometryLib,
     );
     coverageArea.id = partnerDto.coverageArea.id;
     const address = new Address(

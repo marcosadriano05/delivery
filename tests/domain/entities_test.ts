@@ -1,5 +1,6 @@
 import { assertEquals, describe, it } from "../../deps/test.ts";
 import { Address, CoverageArea, Point } from "../../src/domain/entities.ts";
+import { GeometryWasmLib } from "../../src/infra/geometry_wasm_lib.ts";
 
 const coordinates = [
   [[[30, 20], [45, 40], [10, 40], [30, 20]], [[26, 34], [34, 36], [30, 30], [
@@ -15,7 +16,8 @@ const points = coordinates.map((item1) => {
   });
 });
 
-const coverageArea = new CoverageArea(points);
+const geometryLib = new GeometryWasmLib();
+const coverageArea = new CoverageArea(points, geometryLib);
 
 describe("CoverageArea", () => {
   it("should return an array of Polygons", () => {
