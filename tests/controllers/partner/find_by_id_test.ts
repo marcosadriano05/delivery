@@ -7,7 +7,6 @@ import {
 } from "../../../deps/test.ts";
 import { FindByIdController } from "../../../src/controllers/partner/find_by_id.ts";
 import { FakePartnerRepo } from "../../mock/fake_partner_repo.ts";
-import { fakeData } from "../../mock/fake_data.ts";
 
 const repo = new FakePartnerRepo();
 const controller = new FindByIdController(repo);

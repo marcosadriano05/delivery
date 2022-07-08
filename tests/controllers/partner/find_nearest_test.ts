@@ -39,7 +39,7 @@ describe("Find nearest partner controller", () => {
     );
   });
 
-  it("should return status 500 getById throws", async () => {
+  it("should return status 500 getAll throws", async () => {
     const getAllStub = stub(
       repo,
       "getAll",
