@@ -9,66 +9,73 @@ export class SaveController implements Controller {
 
   async handle(req: HttpRequest): Promise<HttpResponse> {
     try {
-      const body = req.body;
-      const requiredParamsString = ["tradingName", "ownerName", "document"];
-      const requiredParamsObject = ["address", "coverageArea"];
-      if (req.body === undefined || Object.keys(req.body).length === 0) {
-        return badRequest(
-          "Body params required: tradingName, ownerName, document, address, coverageArea.",
-        );
+      const validationFailed = validateParams(req.body);
+      if (validationFailed) {
+        return validationFailed;
       }
-      for (const param of requiredParamsString) {
-        if (req.body[param] === undefined) {
-          return badRequest(
-            "Body params required: tradingName, ownerName, document, address, coverageArea.",
-          );
-        }
-        if (typeof req.body[param] !== "string") {
-          return badRequest(
-            "Body params should be strings: tradingName, ownerName, document.",
-          );
-        }
-      }
-      for (const param of requiredParamsObject) {
-        if (
-          req.body[param] === undefined ||
-          Object.keys(req.body[param]).length === 0
-        ) {
-          return badRequest(
-            `Body params required to ${param}: type, coordinates.`,
-          );
-        }
-      }
-      for (const param of requiredParamsObject) {
-        if (
-          req.body[param].type === undefined ||
-          typeof req.body[param].type !== "string"
-        ) {
-          return badRequest(
-            `Body params type to ${param} should be string.`,
-          );
-        }
-      }
-      if (!checkIfAddressCoordinatesIsValid(req.body.address.coordinates)) {
-        return badRequest(
-          "Body param address.coordinates must be empty array or an array of numbers.",
-        );
-      }
-      if (
-        !checkIfCoverageAreaCoordinatesIsValid(
-          req.body.coverageArea.coordinates,
-        )
-      ) {
-        return badRequest(
-          "Body param coverageArea.coordinates must be empty array or an number[][][][].",
-        );
-      }
-      await this.repository.save(body);
+      await this.repository.save(req.body);
       return created("Partner created.");
     } catch (error) {
       return serverError(error);
     }
   }
+}
+
+function validateParams(body: any): HttpResponse | null {
+  const requiredParamsString = ["tradingName", "ownerName", "document"];
+  const requiredParamsObject = ["address", "coverageArea"];
+  if (body === undefined || Object.keys(body).length === 0) {
+    return badRequest(
+      "Body params required: tradingName, ownerName, document, address, coverageArea.",
+    );
+  }
+  for (const param of requiredParamsString) {
+    if (body[param] === undefined) {
+      return badRequest(
+        "Body params required: tradingName, ownerName, document, address, coverageArea.",
+      );
+    }
+    if (typeof body[param] !== "string") {
+      return badRequest(
+        "Body params should be strings: tradingName, ownerName, document.",
+      );
+    }
+  }
+  for (const param of requiredParamsObject) {
+    if (
+      body[param] === undefined ||
+      Object.keys(body[param]).length === 0
+    ) {
+      return badRequest(
+        `Body params required to ${param}: type, coordinates.`,
+      );
+    }
+  }
+  for (const param of requiredParamsObject) {
+    if (
+      body[param].type === undefined ||
+      typeof body[param].type !== "string"
+    ) {
+      return badRequest(
+        `Body params type to ${param} should be string.`,
+      );
+    }
+  }
+  if (!checkIfAddressCoordinatesIsValid(body.address.coordinates)) {
+    return badRequest(
+      "Body param address.coordinates must be empty array or an array of numbers.",
+    );
+  }
+  if (
+    !checkIfCoverageAreaCoordinatesIsValid(
+      body.coverageArea.coordinates,
+    )
+  ) {
+    return badRequest(
+      "Body param coverageArea.coordinates must be empty array or an number[][][][].",
+    );
+  }
+  return null;
 }
 
 function checkIfAddressCoordinatesIsValid(coordinates: any): boolean {
