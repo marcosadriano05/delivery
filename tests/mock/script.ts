@@ -10,7 +10,7 @@ data.forEach(async (value) => {
   a.id = Number(value.id);
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
-  await fetch("http://localhost:5000/partner", {
+  await fetch("https://marcosadriano05-delivery.deno.dev/partner", {
     method: "post",
     headers,
     body: JSON.stringify(a),

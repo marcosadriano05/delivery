@@ -11,7 +11,7 @@ export class FakePartnerRepo implements Repository<PartnerDto> {
   }
 
   save(data: PartnerDto): Promise<void> {
-    throw new Error("Method not implemented.");
+    return new Promise((resolve) => resolve());
   }
 
   getAll(): Promise<PartnerDto[]> {
