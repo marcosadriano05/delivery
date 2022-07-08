@@ -1,8 +1,11 @@
 import { Controller, HttpRequest, HttpResponse } from "../controller.ts";
 import { PartnerDto, Repository } from "../../domain/repository.ts";
 import { Geometry } from "../../domain/geometry.ts";
-import { FindNearestPartner } from "../../domain/find_nearest_partner.ts";
-import { badRequest, ok, serverError } from "../responses.ts";
+import {
+  FindNearestPartner,
+  FindPartnerError,
+} from "../../domain/find_nearest_partner.ts";
+import { badRequest, notFound, ok, serverError } from "../responses.ts";
 
 export class FindNearestController implements Controller {
   constructor(
@@ -29,6 +32,9 @@ export class FindNearestController implements Controller {
       const partner = await service.exec(body.lat, body.lon);
       return ok(partner);
     } catch (error) {
+      if (error instanceof FindPartnerError) {
+        return notFound(error.message);
+      }
       return serverError(error);
     }
   }
