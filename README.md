@@ -16,6 +16,9 @@ Deno Deploy and the Postgres database on Supabase.
 
 The API is available at this [link](https://marcosadriano05-delivery.deno.dev/).
 
+Obs: The database has populated with the fake data provided by the challenge
+repository.
+
 The API is hosted on [Deno Deploy](https://deno.com/deploy). The database is
 hosted on [Supabase](https://supabase.com/).
 
