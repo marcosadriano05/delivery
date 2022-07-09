@@ -154,7 +154,7 @@ To run the project:
 deno task run
 ```
 
-## Points to imporve
+## Points to improve
 
 - Create an script to setup an container Docker with Postgres to run integration
   tests on the database.
