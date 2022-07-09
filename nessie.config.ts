@@ -1,11 +1,12 @@
 import { ClientPostgreSQL, NessieConfig } from "./deps/nessie.ts";
+import { env } from "./env.ts";
 
 const client = new ClientPostgreSQL({
-  database: "delivery",
-  hostname: "localhost",
-  port: 5432,
-  user: "postgres",
-  password: "postgres",
+  database: env.dbName,
+  hostname: env.dbHost,
+  port: Number(env.dbPort),
+  user: env.dbUser,
+  password: env.dbPassword,
 });
 
 const config: NessieConfig = {

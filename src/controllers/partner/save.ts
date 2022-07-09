@@ -9,9 +9,9 @@ export class SaveController implements Controller {
 
   async handle(req: HttpRequest): Promise<HttpResponse> {
     try {
-      const validationFailed = validateParams(req.body);
-      if (validationFailed) {
-        return validationFailed;
+      const validationErrorResponse = validateParams(req.body);
+      if (validationErrorResponse) {
+        return validationErrorResponse;
       }
       await this.repository.save(req.body);
       return created("Partner created.");
