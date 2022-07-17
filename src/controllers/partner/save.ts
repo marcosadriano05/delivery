@@ -1,6 +1,7 @@
 import { Controller, HttpRequest, HttpResponse } from "../controller.ts";
 import { PartnerDto, Repository } from "../../domain/repository.ts";
 import { badRequest, created, serverError } from "../responses.ts";
+import { ValidationError } from "../validation_error.ts";
 
 export class SaveController implements Controller {
   constructor(
@@ -9,34 +10,34 @@ export class SaveController implements Controller {
 
   async handle(req: HttpRequest): Promise<HttpResponse> {
     try {
-      const validationErrorResponse = validateParams(req.body);
-      if (validationErrorResponse) {
-        return validationErrorResponse;
-      }
+      validateParams(req.body);
       await this.repository.save(req.body);
       return created("Partner created.");
     } catch (error) {
+      if (error instanceof ValidationError) {
+        return badRequest(error.message);
+      }
       return serverError(error);
     }
   }
 }
 
-function validateParams(body: any): HttpResponse | null {
+function validateParams(body: any): void {
   const requiredParamsString = ["tradingName", "ownerName", "document"];
   const requiredParamsObject = ["address", "coverageArea"];
   if (body === undefined || Object.keys(body).length === 0) {
-    return badRequest(
+    throw new ValidationError(
       "Body params required: tradingName, ownerName, document, address, coverageArea.",
     );
   }
   for (const param of requiredParamsString) {
     if (body[param] === undefined) {
-      return badRequest(
+      throw new ValidationError(
         "Body params required: tradingName, ownerName, document, address, coverageArea.",
       );
     }
     if (typeof body[param] !== "string") {
-      return badRequest(
+      throw new ValidationError(
         "Body params should be strings: tradingName, ownerName, document.",
       );
     }
@@ -46,7 +47,7 @@ function validateParams(body: any): HttpResponse | null {
       body[param] === undefined ||
       Object.keys(body[param]).length === 0
     ) {
-      return badRequest(
+      throw new ValidationError(
         `Body params required to ${param}: type, coordinates.`,
       );
     }
@@ -56,13 +57,13 @@ function validateParams(body: any): HttpResponse | null {
       body[param].type === undefined ||
       typeof body[param].type !== "string"
     ) {
-      return badRequest(
+      throw new ValidationError(
         `Body params type to ${param} should be string.`,
       );
     }
   }
   if (!checkIfAddressCoordinatesIsValid(body.address.coordinates)) {
-    return badRequest(
+    throw new ValidationError(
       "Body param address.coordinates must be empty array or an array of numbers.",
     );
   }
@@ -71,11 +72,10 @@ function validateParams(body: any): HttpResponse | null {
       body.coverageArea.coordinates,
     )
   ) {
-    return badRequest(
+    throw new ValidationError(
       "Body param coverageArea.coordinates must be empty array or an number[][][][].",
     );
   }
-  return null;
 }
 
 function checkIfAddressCoordinatesIsValid(coordinates: any): boolean {
