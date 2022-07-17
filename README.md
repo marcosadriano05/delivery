@@ -9,18 +9,7 @@ partner for the given latitude and longitude.
 
 This project are made using Deno for the API, Wasmbuild to compiles a library in
 Rust code to WebAssembly, this library uses [Geo](https://crates.io/crates/geo)
-crate to calculate if a pointer is inside a polygon. The project are hosted on
-Deno Deploy and the Postgres database on Supabase.
-
-## Production
-
-The API is available at this [link](https://marcosadriano05-delivery.deno.dev/).
-
-Obs: The database has populated with the fake data provided by the challenge
-repository.
-
-The API is hosted on [Deno Deploy](https://deno.com/deploy). The database is
-hosted on [Supabase](https://supabase.com/).
+crate to calculate if a pointer is inside a polygon.
 
 ### API
 
@@ -162,7 +151,4 @@ deno task run
 - Integrate this setup and integration tests on Github Actions on push or pull
   on branch main.
 
-- Be able to Deploy only if all the CI pipeline are ok.
-
-- Integrate the migrations with Supabase migrations to automatic edit the
-  database hosted on Supabase.
+- Deploy on Deno Deploy and Supabase.
