@@ -1,7 +1,8 @@
 import { Controller, HttpRequest, HttpResponse } from "../controller.ts";
 import { PartnerDto, Repository } from "../../domain/repository.ts";
-import { badRequest, created, serverError } from "../responses.ts";
+import { created } from "../responses.ts";
 import { ValidationError } from "../validation_error.ts";
+import { responseFromError } from "../error_handle.ts";
 
 export class SaveController implements Controller {
   constructor(
@@ -14,10 +15,7 @@ export class SaveController implements Controller {
       await this.repository.save(req.body);
       return created("Partner created.");
     } catch (error) {
-      if (error instanceof ValidationError) {
-        return badRequest(error.message);
-      }
-      return serverError(error);
+      return responseFromError(error);
     }
   }
 }

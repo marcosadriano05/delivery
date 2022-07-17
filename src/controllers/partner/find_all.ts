@@ -1,6 +1,7 @@
 import { Controller, HttpRequest, HttpResponse } from "../controller.ts";
 import { PartnerDto, Repository } from "../../domain/repository.ts";
-import { notFound, ok, serverError } from "../responses.ts";
+import { notFound, ok } from "../responses.ts";
+import { responseFromError } from "../error_handle.ts";
 
 export class FindAllController implements Controller {
   constructor(
@@ -15,7 +16,7 @@ export class FindAllController implements Controller {
       }
       return ok(partners);
     } catch (error) {
-      return serverError(error);
+      return responseFromError(error);
     }
   }
 }

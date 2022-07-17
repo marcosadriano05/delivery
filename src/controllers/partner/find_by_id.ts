@@ -1,7 +1,8 @@
 import { Controller, HttpRequest, HttpResponse } from "../controller.ts";
 import { PartnerDto, Repository } from "../../domain/repository.ts";
-import { badRequest, notFound, ok, serverError } from "../responses.ts";
+import { notFound, ok } from "../responses.ts";
 import { ValidationError } from "../validation_error.ts";
+import { responseFromError } from "../error_handle.ts";
 
 export class FindByIdController implements Controller {
   constructor(
@@ -18,10 +19,7 @@ export class FindByIdController implements Controller {
       }
       return ok(partner);
     } catch (error) {
-      if (error instanceof ValidationError) {
-        return badRequest(error.message);
-      }
-      return serverError(error);
+      return responseFromError(error);
     }
   }
 }
