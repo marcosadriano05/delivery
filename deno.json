@@ -1,7 +1,7 @@
 {
   "tasks": {
     "run": "deno run --allow-read --allow-env --allow-net src/main/server.ts",
-    "wasmbuild": "deno run -A https://deno.land/x/wasmbuild@0.15.5/main.ts",
+    "wasmbuild": "deno run -A https://deno.land/x/wasmbuild@0.15.6/main.ts",
     "test": "deno test --allow-read",
     "migration:create": "deno run -A --unstable https://deno.land/x/nessie/cli.ts make:migration",
     "migration:run": "deno run -A --unstable https://deno.land/x/nessie/cli.ts migrate",
@@ -12,5 +12,9 @@
   "fmt": {
     "include": ["src/", "test/", "deps/", "db/"],
     "exclude": ["deno.lock"]
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@^0.225.2",
+    "@std/testing": "jsr:@std/testing@^0.224.0"
   }
 }
