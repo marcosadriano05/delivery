@@ -19,7 +19,7 @@ export class FindByIdController implements Controller {
       }
       return ok(partner);
     } catch (error) {
-      return responseFromError(error);
+      return responseFromError(error as Error);
     }
   }
 }

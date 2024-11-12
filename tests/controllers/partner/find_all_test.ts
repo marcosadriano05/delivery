@@ -36,7 +36,7 @@ describe("Find all partners controller", () => {
     const getAllStub = stub(
       repo,
       "getAll",
-      returnsNext([new Promise((resolve, reject) => reject([]))]),
+      returnsNext([new Promise((_resolve, reject) => reject([]))]),
     );
 
     const response = await controller.handle({});

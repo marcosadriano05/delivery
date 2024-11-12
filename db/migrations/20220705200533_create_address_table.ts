@@ -6,7 +6,7 @@ import {
 
 export default class extends AbstractMigration<ClientPostgreSQL> {
   /** Runs on migrate */
-  async up(info: Info): Promise<void> {
+  async up(_info: Info): Promise<void> {
     await this.client.queryArray(
       `CREATE TABLE address (
         id INT GENERATED ALWAYS AS IDENTITY,
@@ -22,7 +22,7 @@ export default class extends AbstractMigration<ClientPostgreSQL> {
   }
 
   /** Runs on rollback */
-  async down(info: Info): Promise<void> {
+  async down(_info: Info): Promise<void> {
     await this.client.queryArray("DROP TABLE address;");
   }
 }

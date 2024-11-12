@@ -10,7 +10,7 @@ export class FakePartnerRepo implements Repository<PartnerDto> {
     return new Promise((resolve) => resolve(partner));
   }
 
-  save(data: PartnerDto): Promise<void> {
+  save(_data: PartnerDto): Promise<void> {
     return new Promise((resolve) => resolve());
   }
 

@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 import { PartnerDto, Repository } from "../domain/repository.ts";
 import { Client } from "../../deps/postgres.ts";
 

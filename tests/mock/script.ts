@@ -2,7 +2,7 @@
 // Run this script with deno run --allow-net --allow-env script.ts
 // Run when the server is running
 
-import pdvs from "./pdvs.json" assert { type: "json" };
+import pdvs from "./pdvs.json" with { type: "json" };
 
 const data = pdvs.pdvs;
 data.forEach(async (value) => {

@@ -11,10 +11,13 @@
   },
   "fmt": {
     "include": ["src/", "test/", "deps/", "db/"],
-    "exclude": ["deno.lock"]
+    "exclude": ["rs_lib", "deno.lock"]
   },
+  "lint": {
+    "exclude": ["rs_lib", "deno.lock"]
+  }
   "imports": {
-    "@std/assert": "jsr:@std/assert@^0.225.2",
-    "@std/testing": "jsr:@std/testing@^0.224.0"
+    "@std/assert": "jsr:@std/assert@^1.0.7",
+    "@std/testing": "jsr:@std/testing@^1.0.4"
   }
 }

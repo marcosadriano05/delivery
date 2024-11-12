@@ -6,7 +6,6 @@ import {
   stub,
 } from "../../../deps/test.ts";
 import { FindNearestController } from "../../../src/controllers/partner/find_nearest.ts";
-import { FindPartnerError } from "../../../src/domain/find_nearest_partner.ts";
 import { FakePartnerRepo } from "../../mock/fake_partner_repo.ts";
 import { FakeGeometryLib } from "../../mock/fake_geometry_lib.ts";
 
@@ -46,7 +45,7 @@ describe("Find nearest partner controller", () => {
     const getAllStub = stub(
       repo,
       "getAll",
-      returnsNext([new Promise((resolve, reject) => reject(null))]),
+      returnsNext([new Promise((_resolve, reject) => reject(null))]),
     );
 
     const response = await controller.handle({

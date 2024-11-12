@@ -19,11 +19,12 @@ export class FindNearestController implements Controller {
       const partner = await service.exec(req.body.lat, req.body.lon);
       return ok(partner);
     } catch (error) {
-      return responseFromError(error);
+      return responseFromError(error as Error);
     }
   }
 }
 
+// deno-lint-ignore no-explicit-any
 function validateParams(body: any): void {
   if (body === undefined || Object.keys(body).length === 0) {
     throw new ValidationError("Body params missing: lat, lon.");

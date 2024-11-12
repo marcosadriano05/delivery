@@ -166,7 +166,7 @@ describe("Save partner controller", () => {
     const saveStub = stub(
       repo,
       "save",
-      returnsNext([new Promise((resolve, reject) => reject(null))]),
+      returnsNext([new Promise((_resolve, reject) => reject(null))]),
     );
 
     const response = await controller.handle({

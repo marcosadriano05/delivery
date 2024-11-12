@@ -54,7 +54,7 @@ describe("Find by id partner controller", () => {
     const getByIdStub = stub(
       repo,
       "getById",
-      returnsNext([new Promise((resolve, reject) => reject(null))]),
+      returnsNext([new Promise((_resolve, reject) => reject(null))]),
     );
 
     const response = await controller.handle({

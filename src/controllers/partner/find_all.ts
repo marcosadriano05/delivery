@@ -8,7 +8,7 @@ export class FindAllController implements Controller {
     private readonly repository: Repository<PartnerDto>,
   ) {}
 
-  async handle(req: HttpRequest): Promise<HttpResponse> {
+  async handle(_req: HttpRequest): Promise<HttpResponse> {
     try {
       const partners = await this.repository.getAll();
       if (partners.length === 0) {
@@ -16,7 +16,7 @@ export class FindAllController implements Controller {
       }
       return ok(partners);
     } catch (error) {
-      return responseFromError(error);
+      return responseFromError(error as Error);
     }
   }
 }

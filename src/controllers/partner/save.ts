@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 import { Controller, HttpRequest, HttpResponse } from "../controller.ts";
 import { PartnerDto, Repository } from "../../domain/repository.ts";
 import { created } from "../responses.ts";
@@ -15,7 +16,7 @@ export class SaveController implements Controller {
       await this.repository.save(req.body);
       return created("Partner created.");
     } catch (error) {
-      return responseFromError(error);
+      return responseFromError(error as Error);
     }
   }
 }

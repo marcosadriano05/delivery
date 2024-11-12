@@ -10,11 +10,12 @@ export const notFound = (message: string): HttpResponse => ({
   body: { message },
 });
 
-export const serverError = (error?: Error): HttpResponse => ({
+export const serverError = (_error?: Error): HttpResponse => ({
   statusCode: 500,
   body: { message: "Server error." },
 });
 
+// deno-lint-ignore no-explicit-any
 export const ok = (data: any): HttpResponse => ({
   statusCode: 200,
   body: data,
