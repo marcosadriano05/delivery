@@ -8,13 +8,16 @@ export class PostgresRepository implements Repository<PartnerDto> {
   ) {}
 
   async getById(id: number): Promise<PartnerDto | null> {
-    const partner = await this.client.queryArray(
-      `SELECT p.id, p.trading_name, p.owner_name, p."document", a.id, a."type", a.coordinates, ca.id, ca."type", ca.coordinates FROM partner p
+    const query = {
+      text:
+        `SELECT p.id, p.trading_name, p.owner_name, p."document", a.id, a."type", a.coordinates, ca.id, ca."type", ca.coordinates FROM partner p
       INNER JOIN address a ON a.partner_id = p.id 
       INNER JOIN coverage_area ca ON ca.partner_id = p.id
       WHERE p.id = $1;`,
-      [id],
-    );
+      values: [id],
+      rowMode: "array",
+    };
+    const partner = await this.client.query(query);
     if (partner.rows.length === 0) {
       return null;
     }
@@ -22,46 +25,55 @@ export class PostgresRepository implements Repository<PartnerDto> {
   }
 
   async getAll(): Promise<PartnerDto[]> {
-    const partners = await this.client.queryArray(
-      `SELECT p.id, p.trading_name, p.owner_name, p."document", a.id, a."type", a.coordinates, ca.id, ca."type", ca.coordinates FROM partner p
+    const query = {
+      text:
+        `SELECT p.id, p.trading_name, p.owner_name, p."document", a.id, a."type", a.coordinates, ca.id, ca."type", ca.coordinates FROM partner p
       INNER JOIN address a ON a.partner_id = p.id 
       INNER JOIN coverage_area ca ON ca.partner_id = p.id;`,
-    );
+      rowMode: "array",
+    };
+    const partners = await this.client.query(query);
     return transformInPartnerDtoArray(partners);
   }
 
   async save(data: PartnerDto): Promise<void> {
-    const savedPartner = await this.client.queryArray(
-      `INSERT INTO partner (trading_name, owner_name, document)
+    const queryToSavePartner = {
+      text: `INSERT INTO partner (trading_name, owner_name, document)
       VALUES ($1, $2, $3)
       RETURNING id;`,
-      [
+      values: [
         data.tradingName,
         data.ownerName,
         data.document,
       ],
-    );
+      rowMode: "array",
+    };
+    const savedPartner = await this.client.query(queryToSavePartner);
     const partnerId = savedPartner.rows[0][0];
-    await this.client.queryArray(
-      `INSERT INTO address (type, coordinates, partner_id)
+    const queryToSaveAddress = {
+      text: `INSERT INTO address (type, coordinates, partner_id)
       VALUES ($1, $2, $3)
       RETURNING id;`,
-      [
+      values: [
         data.address.type,
         data.address.coordinates,
         partnerId,
       ],
-    );
-    await this.client.queryArray(
-      `INSERT INTO coverage_area (type, coordinates, partner_id)
+      rowMode: "array",
+    };
+    await this.client.query(queryToSaveAddress);
+    const queryToSaveCoverageArea = {
+      text: `INSERT INTO coverage_area (type, coordinates, partner_id)
       VALUES ($1, $2, $3)
       RETURNING id;`,
-      [
+      values: [
         data.coverageArea.type,
         data.coverageArea.coordinates,
         partnerId,
       ],
-    );
+      rowMode: "array",
+    };
+    await this.client.queryArray(queryToSaveCoverageArea);
   }
 }
 
