@@ -1,7 +1,8 @@
 import { Point, Polygon } from "../domain/entities.ts";
 import { Geometry } from "../domain/geometry.ts";
-import { instantiate } from "../../lib/rs_lib.generated.js";
-const { is_point_in_polygon } = await instantiate();
+import init, { is_point_in_polygon } from "geo_helper";
+
+await init();
 
 export class GeometryWasmLib implements Geometry {
   isPointInsidePolygon(point: Point, polygon: Polygon): boolean {
