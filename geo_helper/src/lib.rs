@@ -9,18 +9,17 @@ pub fn is_point_in_polygon(
   point: JsValue,
   polygon: JsValue,
 ) -> Result<bool, JsValue> {
-  let point_js: PointJs;
-  match serde_wasm_bindgen::from_value(point) {
-    Ok(value) => point_js = value,
+  let point_js: PointJs = match serde_wasm_bindgen::from_value(point) {
+    Ok(value) => value,
     Err(_err) => return Err(JsValue::from("Erro ao converter point.")),
-  }
+  };
+
   let point: Point<f64> = Point::new(point_js.x, point_js.y);
 
-  let polygon_js: PolygonJs;
-  match serde_wasm_bindgen::from_value(polygon) {
-    Ok(value) => polygon_js = value,
+  let polygon_js: PolygonJs = match serde_wasm_bindgen::from_value(polygon) {
+    Ok(value) => value,
     Err(_err) => return Err(JsValue::from("Erro ao converter polygon.")),
-  }
+  };
 
   let exterior = LineString::new(points_to_coordinates(&polygon_js.exterior));
 
