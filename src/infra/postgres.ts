@@ -1,7 +1,7 @@
-import { Client } from "../../deps/postgres.ts";
+import pg from "pg";
 import { env } from "../../env.ts";
 
-export const client = new Client({
+export const client = new pg.Client({
   user: env.dbUser,
   password: env.dbPassword,
   database: env.dbName,

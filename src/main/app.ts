@@ -1,9 +1,9 @@
-import { json, opine } from "../../deps/opine.ts";
+import { Application } from "../../deps/oak.ts";
 import { router } from "./routes.ts";
 
-const app = opine();
+const app = new Application();
 
-app.use(json());
-app.use(router);
+app.use(router.routes());
+app.use(router.allowedMethods());
 
 export { app };

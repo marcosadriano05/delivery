@@ -24,8 +24,5 @@ jobs:
       - name: Verify formatting
         run: deno fmt --check
 
-      - name: Check Wasm up-to-date
-        run: deno task wasmbuild --check
-
       - name: Run tests
-        run: deno test --unstable --allow-net --allow-env --allow-read --allow-write
+        run: deno test -R

@@ -16,12 +16,14 @@ export class SaveController implements Controller {
       await this.repository.save(req.body);
       return created("Partner created.");
     } catch (error) {
+      console.log("error", error);
       return responseFromError(error as Error);
     }
   }
 }
 
 function validateParams(body: any): void {
+  console.log("body", body);
   const requiredParamsString = ["tradingName", "ownerName", "document"];
   const requiredParamsObject = ["address", "coverageArea"];
   if (body === undefined || Object.keys(body).length === 0) {

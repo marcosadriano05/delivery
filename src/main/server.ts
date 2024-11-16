@@ -3,4 +3,4 @@ import { client } from "../infra/postgres.ts";
 
 client.connect();
 
-app.listen(5000, () => console.log("Server up on port 5000"));
+await app.listen({ port: 5000 });

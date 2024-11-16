@@ -1,10 +1,10 @@
 // deno-lint-ignore-file no-explicit-any
 import { PartnerDto, Repository } from "../domain/repository.ts";
-import { Client } from "../../deps/postgres.ts";
+import pg from "pg";
 
 export class PostgresRepository implements Repository<PartnerDto> {
   constructor(
-    private readonly client: Client,
+    private readonly client: pg.Client,
   ) {}
 
   async getById(id: number): Promise<PartnerDto | null> {
@@ -62,6 +62,7 @@ export class PostgresRepository implements Repository<PartnerDto> {
       rowMode: "array",
     };
     await this.client.query(queryToSaveAddress);
+
     const queryToSaveCoverageArea = {
       text: `INSERT INTO coverage_area (type, coordinates, partner_id)
       VALUES ($1, $2, $3)
@@ -73,7 +74,7 @@ export class PostgresRepository implements Repository<PartnerDto> {
       ],
       rowMode: "array",
     };
-    await this.client.queryArray(queryToSaveCoverageArea);
+    await this.client.query(queryToSaveCoverageArea);
   }
 }
 

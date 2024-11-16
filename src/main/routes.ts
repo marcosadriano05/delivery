@@ -1,5 +1,5 @@
-import { Router } from "../../deps/opine.ts";
-import { opineAdapter } from "./opine_adapter.ts";
+import { Router } from "../../deps/oak.ts";
+import { oakAdapter } from "./oak_adapter.ts";
 import {
   findAllPartners,
   findNearestPartner,
@@ -7,11 +7,11 @@ import {
   savePartner,
 } from "./factory.ts";
 
-const router = Router();
+const router = new Router();
 
-router.get("/partner/:id", opineAdapter(findPartnerById()));
-router.get("/partner", opineAdapter(findAllPartners()));
-router.post("/partner", opineAdapter(savePartner()));
-router.post("/partner/nearest", opineAdapter(findNearestPartner()));
+router.get("/partner/:id", oakAdapter(findPartnerById()));
+router.get("/partner", oakAdapter(findAllPartners()));
+router.post("/partner", oakAdapter(savePartner()));
+router.post("/partner/nearest", oakAdapter(findNearestPartner()));
 
 export { router };
