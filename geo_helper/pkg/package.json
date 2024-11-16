@@ -1,0 +1,15 @@
+{
+  "name": "geo-helper",
+  "type": "module",
+  "version": "0.2.0",
+  "files": [
+    "geo_helper_bg.wasm",
+    "geo_helper.js",
+    "geo_helper.d.ts"
+  ],
+  "main": "geo_helper.js",
+  "types": "geo_helper.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}

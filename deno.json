@@ -2,7 +2,7 @@
   "tasks": {
     "run": "deno run -REN src/main/server.ts",
     "test": "deno test -R",
-    "build:wasm": "wasm-pack build --release --target web ./geo_helper/",
+    "build:wasm": "wasm-pack build --release --target web ./geo_helper/ && rm ./geo_helper/pkg/.gitignore",
     "test:wasm": "wasm-pack test --node -r ./geo_helper/",
     "migration:create": "deno run -A --unstable https://deno.land/x/nessie/cli.ts make:migration",
     "migration:run": "deno run -A --unstable https://deno.land/x/nessie/cli.ts migrate",
